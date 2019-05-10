@@ -217,8 +217,8 @@ public class Teleport implements ITeleport {
             } else {
                 cost = 30; //one diamond is a lot, but cross-world teleportation should be expensive.
             }
-
             cashCharge = new Trade(cost, ess);
+            cashCharge.isAffordableFor(teleportee);
         }
         else { cashCharge = new Trade(chargeFor.getCommandCost(teleportOwner), ess); }
 
@@ -259,6 +259,7 @@ public class Teleport implements ITeleport {
                 cost = 30; //one diamond is a lot, but cross-world teleportation should be expensive.
             }
             cashCharge = new Trade(cost, ess);
+            cashCharge.isAffordableFor(teleporter);
         }
         else {
             cashCharge = new Trade(chargeFor.getCommandCost(teleporter), ess);
