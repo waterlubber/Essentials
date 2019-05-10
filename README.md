@@ -6,13 +6,16 @@
 
 [<img alt="Patreon" src="https://img.shields.io/badge/-Support_on_Patreon-F96854.svg?logo=patreon&style=flat-square&logoColor=white" height=32>](https://www.patreon.com/essentialsx)
 
-This is a fork of Essentials called EssentialsX.
+This is a fork of a fork of Essentials called EssentialsX called EssentialsX + Teleport Cost
 
-If you are using this, do **NOT** ask Essentials for support.
+
+If you are using this, may god have mercy on your soul.
+It adds a block-based hard-coded cost to teleportation. It's a crime. Please don't look at it.
+
 
 The official upstream repository is at https://github.com/Essentials/Essentials.
 
-
+(I didn't bother changing anything past this point)
 Why use EssentialsX?
 --------
 
