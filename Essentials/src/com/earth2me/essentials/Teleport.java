@@ -184,8 +184,9 @@ public class Teleport implements ITeleport {
     private void teleport(IUser teleportee, ITarget target, Trade chargeFor, TeleportCause cause) throws Exception {
         double delay = ess.getSettings().getTeleportDelay();
 
+        //We're going to be overriding the stock cost mechanism
+        /*
         Trade cashCharge = chargeFor;
-
         if (chargeFor != null) {
             chargeFor.isAffordableFor(teleportOwner);
 
@@ -195,6 +196,31 @@ public class Teleport implements ITeleport {
                 cashCharge = new Trade(chargeFor.getCommandCost(teleportOwner), ess);
             }
         }
+        */
+        //Inserting the new code here
+        Trade cashCharge;
+        if(cause==TeleportCause.COMMAND) {
+            //part of this code taken from https://www.reddit.com/r/admincraft/comments/blx12v/cost_for_teleportation_plugins/ems5vhj/
+            Location from = ((User) teleportee).getLocation();
+            Location to = target.getLocation();
+            double cost = 0;
+            if (from.getWorld().equals(to.getWorld())) {
+                double distance = from.distance(to);
+                //pricing logic
+                if (distance < 128) {
+                    cost = distance * 0.0017857142857;
+                } else if (distance < 2048) {
+                    cost = 0.00055555555555 * (distance - 128d) * Math.sqrt(distance - 128d) + 0.0017857142857 * distance;
+                } else if (distance >= 2048) {
+                    cost = 46.70248149109 + (0.0017857142857 * distance) + ((distance - 2048d) / 100d);
+                }
+            } else {
+                cost = 30; //one diamond is a lot, but cross-world teleportation should be expensive.
+            }
+
+            cashCharge = new Trade(cost, ess);
+        }
+        else { cashCharge = new Trade(chargeFor.getCommandCost(teleportOwner), ess); }
 
         cooldown(true);
         if (delay <= 0 || teleportOwner.isAuthorized("essentials.teleport.timer.bypass") || teleportee.isAuthorized("essentials.teleport.timer.bypass")) {
@@ -213,7 +239,32 @@ public class Teleport implements ITeleport {
 
     private void teleportOther(IUser teleporter, IUser teleportee, ITarget target, Trade chargeFor, TeleportCause cause) throws Exception {
         double delay = ess.getSettings().getTeleportDelay();
+        Trade cashCharge;
+        if(cause==TeleportCause.COMMAND) {
+            //part of this code taken from https://www.reddit.com/r/admincraft/comments/blx12v/cost_for_teleportation_plugins/ems5vhj/
+            Location from = ((User) teleportee).getLocation();
+            Location to = target.getLocation();
+            double cost = 0;
+            if (from.getWorld().equals(to.getWorld())) {
+                double distance = from.distance(to);
+                //pricing logic
+                if (distance < 128) {
+                    cost = distance * 0.0017857142857;
+                } else if (distance < 2048) {
+                    cost = 0.00055555555555 * (distance - 128d) * Math.sqrt(distance - 128d) + 0.0017857142857 * distance;
+                } else if (distance >= 2048) {
+                    cost = 46.70248149109 + (0.0017857142857 * distance) + ((distance - 2048d) / 100d);
+                }
+            } else {
+                cost = 30; //one diamond is a lot, but cross-world teleportation should be expensive.
+            }
+            cashCharge = new Trade(cost, ess);
+        }
+        else {
+            cashCharge = new Trade(chargeFor.getCommandCost(teleporter), ess);
+        }
 
+        /* old code
         Trade cashCharge = chargeFor;
 
         if (teleporter != null && chargeFor != null) {
@@ -225,6 +276,8 @@ public class Teleport implements ITeleport {
                 cashCharge = new Trade(chargeFor.getCommandCost(teleporter), ess);
             }
         }
+
+       */
 
         cooldown(true);
         if (delay <= 0 || teleporter == null
