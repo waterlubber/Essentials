@@ -56,7 +56,7 @@ public class Commandwarp extends EssentialsCommand {
             throw new NoChargeException();
         }
         User otherUser = getPlayer(server, args, 1, true, false);
-        otherUser.getTeleport().warp(otherUser, args[0], null, TeleportCause.COMMAND);
+        otherUser.getTeleport().warp(otherUser, args[0], null, TeleportCause.PLUGIN);
         throw new NoChargeException();
 
     }
@@ -100,7 +100,7 @@ public class Commandwarp extends EssentialsCommand {
         if (ess.getSettings().getPerWarpPermission() && !owner.isAuthorized("essentials.warps." + name)) {
             throw new Exception(tl("warpUsePermission"));
         }
-        owner.getTeleport().warp(user, name, charge, TeleportCause.COMMAND);
+        owner.getTeleport().warp(user, name, charge, TeleportCause.PLUGIN);
     }
 
     private List<String> getAvailableWarpsFor(final IUser user) {
