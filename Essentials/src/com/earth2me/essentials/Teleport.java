@@ -221,7 +221,7 @@ public class Teleport implements ITeleport {
             cashCharge.isAffordableFor(teleportee);
         }
         else { cashCharge = new Trade(chargeFor.getCommandCost(teleportOwner), ess); }
-
+        cashCharge.isAffordableFor(teleportee);
         cooldown(true);
         if (delay <= 0 || teleportOwner.isAuthorized("essentials.teleport.timer.bypass") || teleportee.isAuthorized("essentials.teleport.timer.bypass")) {
             cooldown(false);
@@ -231,7 +231,6 @@ public class Teleport implements ITeleport {
             }
             return;
         }
-
         cancel(false);
         warnUser(teleportee, delay);
         initTimer((long) (delay * 1000.0), teleportee, target, cashCharge, cause, false);
@@ -279,7 +278,7 @@ public class Teleport implements ITeleport {
         }
 
        */
-
+        cashCharge.isAffordableFor(teleportee);
         cooldown(true);
         if (delay <= 0 || teleporter == null
                 || teleporter.isAuthorized("essentials.teleport.timer.bypass")
