@@ -208,14 +208,15 @@ public class Teleport implements ITeleport {
                 double distance = from.distance(to);
                 //pricing logic
                 if (distance < 128) {
-                    cost = distance * 0.0017857142857;
-                } else if (distance < 2048) {
-                    cost = 0.00055555555555 * (distance - 128d) * Math.sqrt(distance - 128d) + 0.0017857142857 * distance;
-                } else if (distance >= 2048) {
-                    cost = 46.70248149109 + (0.0017857142857 * distance) + ((distance - 2048d) / 100d);
+                    cost = 0;
+                } else if (distance > 127) {
+                    cost = 0.2326 * distance;
+                } else {
+                    cost = 6969.6969; //this should never happen, but if it does, at least it will be funny.
                 }
-            } else {
-                cost = 30; //one diamond is a lot, but cross-world teleportation should be expensive.
+            }
+            else {
+                cost = 100; //approximately 8 diamonds
             }
             cashCharge = new Trade(cost, ess);
             cashCharge.isAffordableFor(teleportee);
@@ -226,9 +227,7 @@ public class Teleport implements ITeleport {
         if (delay <= 0 || teleportOwner.isAuthorized("essentials.teleport.timer.bypass") || teleportee.isAuthorized("essentials.teleport.timer.bypass")) {
             cooldown(false);
             now(teleportee, target, cause);
-            if (cashCharge != null) {
-                cashCharge.charge(teleportOwner);
-            }
+            cashCharge.charge(teleportOwner);
             return;
         }
         cancel(false);
@@ -248,14 +247,15 @@ public class Teleport implements ITeleport {
                 double distance = from.distance(to);
                 //pricing logic
                 if (distance < 128) {
-                    cost = distance * 0.0017857142857;
-                } else if (distance < 2048) {
-                    cost = 0.00055555555555 * (distance - 128d) * Math.sqrt(distance - 128d) + 0.0017857142857 * distance;
-                } else if (distance >= 2048) {
-                    cost = 46.70248149109 + (0.0017857142857 * distance) + ((distance - 2048d) / 100d);
+                    cost = 0;
+                } else if (distance > 127) {
+                    cost = 0.2326 * distance;
+                } else {
+                    cost = 6969.6969;//this should never happen, but if it does, at least it will be funny.
                 }
-            } else {
-                cost = 30; //one diamond is a lot, but cross-world teleportation should be expensive.
+            }
+            else {
+                     cost = 100; //approximately 8 diamonds
             }
             cashCharge = new Trade(cost, ess);
             cashCharge.isAffordableFor(teleporter);
@@ -286,9 +286,7 @@ public class Teleport implements ITeleport {
                 || teleportee.isAuthorized("essentials.teleport.timer.bypass")) {
             cooldown(false);
             now(teleportee, target, cause);
-            if (teleporter != null && cashCharge != null) {
-                cashCharge.charge(teleporter);
-            }
+            cashCharge.charge(teleporter);
             return;
         }
 
